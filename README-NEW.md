@@ -8,11 +8,40 @@ Rico is a minimal, modern CSS framework with oklch colors, low specificity (usin
 
 ## Getting Started
 
-Include Rico CSS in your project:
+### Option 1: Use the Import File (Recommended)
+
+Include all Rico CSS modules:
 
 ```html
-<link rel="stylesheet" href="/assets/css/rico.css">
+<link rel="stylesheet" href="rico.css">
 ```
+
+### Option 2: Use Individual Modules
+
+Import only what you need:
+
+```html
+<!-- Core: Variables, reset, base styles, components -->
+<link rel="stylesheet" href="rico-core.css">
+
+<!-- Optional: Utility classes -->
+<link rel="stylesheet" href="rico-utilities.css">
+
+<!-- Optional: Extended components (Toast, Skeleton, Badge, Avatar) -->
+<link rel="stylesheet" href="rico-responsive.css">
+```
+
+### Option 3: Build Your Own
+
+Use the build script to create optimized bundles:
+
+```bash
+./build.sh
+```
+
+This generates:
+- `rico.bundle.css` - Concatenated (58KB)
+- `rico.min.css` - Minified (49KB, 10% smaller)
 
 ---
 
@@ -128,6 +157,8 @@ Rico supports three dark mode strategies:
 | `.fs-lg` | 1.25rem |
 | `.fs-xl` | 1.5rem |
 | `.fs-2xl` | 2rem |
+| `.fs-3xl` | 2.5rem |
+| `.fs-4xl` | 3rem |
 
 ### Font Weight Classes
 
@@ -191,6 +222,30 @@ Rico supports three dark mode strategies:
 
 ```html
 <div class="prose">Max-width: 65ch for readable text</div>
+```
+
+### Container Queries
+
+Enable container queries for component-level responsive design:
+
+```html
+<div class="container-query">
+  <!-- Component content that responds to container width -->
+  <div class="card">
+    <h3>Responsive Card</h3>
+    <p>Adapts to container, not viewport</p>
+  </div>
+</div>
+```
+
+Use with `@container` in your CSS:
+
+```css
+@container (min-width: 400px) {
+  .card {
+    flex-direction: row;
+  }
+}
 ```
 
 ---
@@ -366,16 +421,53 @@ Works with both flex and grid:
 | `.gap-0` | 0 |
 | `.gap-1` | 4px |
 | `.gap-2` | 8px |
-| `.gap-3` | 12px |
 | `.gap-4` | 16px |
-| `.gap-5` | 20px |
 | `.gap-6` | 24px |
 | `.gap-8` | 32px |
-| `.gap-10` | 40px |
 | `.gap-12` | 48px |
 | `.gap-16` | 64px |
 
 Column/row specific: `.gap-x-*`, `.gap-y-*`
+
+---
+
+## Responsive Utilities
+
+Use breakpoint prefixes to apply utilities at specific screen sizes:
+
+| Prefix | Breakpoint | Example |
+|--------|-----------|---------|
+| `sm:` | 640px | `sm:flex` |
+| `md:` | 768px | `md:grid` |
+| `lg:` | 1024px | `lg:hidden` |
+| `xl:` | 1280px | `xl:block` |
+
+### Available Responsive Utilities
+
+**Display:** `sm:flex`, `sm:grid`, `sm:block`, `sm:hidden`
+
+**Flex Direction:** `sm:flex-row`, `sm:flex-col`
+
+**Grid Columns:** `sm:grid-cols-1`, `sm:grid-cols-2`, `sm:grid-cols-3`, `sm:grid-cols-4`
+
+**Gap:** `sm:gap-0`, `sm:gap-2`, `sm:gap-4`, `sm:gap-8`
+
+**Text Alignment:** `sm:text-left`, `sm:text-center`, `sm:text-right`
+
+### Example
+
+```html
+<!-- Stack on mobile, side-by-side on desktop -->
+<div class="flex flex-col md:flex-row gap-4">
+  <div>Column 1</div>
+  <div>Column 2</div>
+</div>
+
+<!-- Hide on mobile, show on desktop -->
+<div class="hidden md:block">
+  Desktop-only content
+</div>
+```
 
 ---
 
@@ -410,13 +502,9 @@ Individual sides: `.pt-*`, `.pb-*`, `.pl-*`, `.pr-*`
 | 0 | 0 |
 | 1 | 4px |
 | 2 | 8px |
-| 3 | 12px |
 | 4 | 16px |
-| 5 | 20px |
 | 6 | 24px |
-| 7 | 28px |
 | 8 | 32px |
-| 10 | 40px |
 | 12 | 48px |
 | 16 | 64px |
 
@@ -742,6 +830,83 @@ Features:
 
 ---
 
+## Extended Components
+
+*Note: These components require `rico-responsive.css`*
+
+### Toast Notification
+
+Positioned at bottom-center with auto-dismiss animation:
+
+```html
+<div class="toast">Default notification</div>
+<div class="toast toast-success">Success message</div>
+<div class="toast toast-error">Error message</div>
+<div class="toast toast-warning">Warning message</div>
+```
+
+### Skeleton Loader
+
+Loading placeholder with pulse animation:
+
+```html
+<!-- Basic skeleton -->
+<div class="skeleton" style="width: 100%; height: 20px;"></div>
+
+<!-- Text skeleton -->
+<div class="skeleton skeleton-text"></div>
+<div class="skeleton skeleton-text" style="width: 80%;"></div>
+
+<!-- Circle skeleton (for avatars) -->
+<div class="skeleton skeleton-circle" style="width: 40px; height: 40px;"></div>
+```
+
+### Badge / Pill
+
+Small status indicators:
+
+```html
+<span class="badge">Default</span>
+<span class="badge badge-primary">Primary</span>
+<span class="badge badge-success">Success</span>
+<span class="badge badge-info">Info</span>
+<span class="badge badge-warning">Warning</span>
+<span class="badge badge-danger">Danger</span>
+
+<!-- Outline variant -->
+<span class="badge badge-outline">Outline</span>
+<span class="badge badge-outline-primary">Primary Outline</span>
+```
+
+### Avatar
+
+Circular image or initials:
+
+```html
+<!-- With image -->
+<div class="avatar">
+  <img src="avatar.jpg" alt="User">
+</div>
+
+<!-- With initials -->
+<div class="avatar">JD</div>
+
+<!-- Sizes -->
+<div class="avatar avatar-sm">SM</div>
+<div class="avatar">MD</div>
+<div class="avatar avatar-lg">LG</div>
+<div class="avatar avatar-xl">XL</div>
+
+<!-- Avatar group (overlapping) -->
+<div class="avatar-group">
+  <div class="avatar">A</div>
+  <div class="avatar">B</div>
+  <div class="avatar">C</div>
+</div>
+```
+
+---
+
 ## Color Utilities
 
 ### Text Colors
@@ -993,6 +1158,8 @@ Automatically adjusts when `prefers-contrast: more` is set.
 
 All interactive elements have visible focus indicators using the brand color.
 
+When `prefers-reduced-motion: reduce` is active, focus indicators become even more prominent with a 3px solid outline to ensure keyboard navigation visibility without animation.
+
 ---
 
 ## CSS Custom Properties Reference
@@ -1004,13 +1171,9 @@ All interactive elements have visible focus indicators using the brand color.
 | `--space-0` | 0 |
 | `--space-1` | 4px |
 | `--space-2` | 8px |
-| `--space-3` | 12px |
 | `--space-4` | 16px |
-| `--space-5` | 20px |
 | `--space-6` | 24px |
-| `--space-7` | 28px |
 | `--space-8` | 32px |
-| `--space-10` | 40px |
 | `--space-12` | 48px |
 | `--space-16` | 64px |
 
@@ -1067,6 +1230,76 @@ All interactive elements have visible focus indicators using the brand color.
 | `--bp-lg` | 1024px |
 | `--bp-xl` | 1280px |
 | `--bp-2xl` | 1536px |
+
+### Container Query Breakpoints
+
+| Property | Value |
+|----------|-------|
+| `--container-sm` | 640px |
+| `--container-md` | 768px |
+| `--container-lg` | 1024px |
+| `--container-xl` | 1280px |
+
+---
+
+## Modular Architecture
+
+Rico CSS is organized into separate modules for optimal loading:
+
+### File Structure
+
+```
+rico.css              # Imports all modules
+rico-core.css         # Core styles (~22KB)
+rico-utilities.css    # Utility classes (~31KB)
+rico-responsive.css   # Extended components (~4KB)
+build.sh             # Build script
+```
+
+### Module Details
+
+**rico-core.css** - Essential styles
+- Google Fonts import (Nunito)
+- CSS custom properties (colors, spacing, typography)
+- Dark mode and high contrast support
+- Reset layer (`@layer reset`)
+- Base layer (typography, sections)
+- Components layer (nav, forms, buttons, tables, cards, surfaces)
+
+**rico-utilities.css** - Utility classes
+- Flexbox utilities
+- Grid utilities
+- Spacing utilities (margin, padding, gap)
+- Typography utilities
+- Color utilities
+- Border utilities
+- Shadow utilities
+- Position utilities
+- Display utilities
+- Size utilities
+- Overflow utilities
+- Z-index utilities
+- Responsive utilities (sm:, md:, lg:, xl:)
+- Accessibility utilities (sr-only, transitions)
+
+**rico-responsive.css** - Extended components
+- Toast notifications (bottom-center)
+- Skeleton loaders
+- Badges/Pills
+- Avatars
+- Animation keyframes
+
+### Build Process
+
+Use the included build script to create production bundles:
+
+```bash
+./build.sh
+```
+
+This generates:
+- `rico.bundle.css` - Concatenated version
+- `rico.min.css` - Minified version (~10% smaller)
 
 ---
 
